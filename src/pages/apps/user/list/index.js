@@ -59,7 +59,7 @@ const userStatusObj = {
 
 // ** renders client column
 const renderClient = row => {
-  if (row.avatar.length) {
+  if (row.avatar?.length) {
     return <CustomAvatar src={row.avatar} sx={{ mr: 2.5, width: 38, height: 38 }} />
   } else {
     return (
@@ -68,7 +68,7 @@ const renderClient = row => {
         color={row.avatarColor}
         sx={{ mr: 2.5, width: 38, height: 38, fontWeight: 500, fontSize: theme => theme.typography.body1.fontSize }}
       >
-        {getInitials(row.fullName ? row.fullName : 'John Doe')}
+        {getInitials(row.nombre ? row.nombre : 'Generic')}
       </CustomAvatar>
     )
   }
@@ -142,9 +142,9 @@ const columns = [
     flex: 0.25,
     minWidth: 280,
     field: 'fullName',
-    headerName: 'User',
+    headerName: 'Paciente',
     renderCell: ({ row }) => {
-      const { fullName, email } = row
+      const { nombre, edad } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -161,10 +161,10 @@ const columns = [
                 '&:hover': { color: 'primary.main' }
               }}
             >
-              {fullName}
+              {nombre}
             </Typography>
             <Typography noWrap variant='body2' sx={{ color: 'text.disabled' }}>
-              {email}
+              {edad}
             </Typography>
           </Box>
         </Box>
@@ -173,65 +173,62 @@ const columns = [
   },
   {
     flex: 0.15,
-    field: 'role',
+    field: 'sexo',
     minWidth: 170,
-    headerName: 'Role',
+    headerName: 'Sexo',
     renderCell: ({ row }) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <CustomAvatar
-            skin='light'
-            sx={{ mr: 4, width: 30, height: 30 }}
-            color={userRoleObj[row.role].color || 'primary'}
-          >
-            <Icon icon={userRoleObj[row.role].icon} />
+          <CustomAvatar skin='light' sx={{ mr: 4, width: 30, height: 30 }} color={'primary'}>
+            <Icon icon={'tabler:user'} />
           </CustomAvatar>
           <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-            {row.role}
+            {row.sexo}
           </Typography>
         </Box>
       )
     }
   },
-  {
-    flex: 0.15,
-    minWidth: 120,
-    headerName: 'Plan',
-    field: 'currentPlan',
-    renderCell: ({ row }) => {
-      return (
-        <Typography noWrap sx={{ fontWeight: 500, color: 'text.secondary', textTransform: 'capitalize' }}>
-          {row.currentPlan}
-        </Typography>
-      )
-    }
-  },
-  {
-    flex: 0.15,
-    minWidth: 190,
-    field: 'billing',
-    headerName: 'Billing',
-    renderCell: ({ row }) => {
-      return (
-        <Typography noWrap sx={{ color: 'text.secondary' }}>
-          {row.billing}
-        </Typography>
-      )
-    }
-  },
+
+  // {
+  //   flex: 0.15,
+  //   minWidth: 120,
+  //   headerName: 'Plan',
+  //   field: 'currentPlan',
+  //   renderCell: ({ row }) => {
+  //     return (
+  //       <Typography noWrap sx={{ fontWeight: 500, color: 'text.secondary', textTransform: 'capitalize' }}>
+  //         {row.diagnostico}
+  //       </Typography>
+  //     )
+  //   }
+  // },
+  // {
+  //   flex: 0.15,
+  //   minWidth: 190,
+  //   field: 'billing',
+  //   headerName: 'Billing',
+  //   renderCell: ({ row }) => {
+  //     return (
+  //       <Typography noWrap sx={{ color: 'text.secondary' }}>
+  //         {row.tratamiento}
+  //       </Typography>
+  //     )
+  //   }
+  // },
   {
     flex: 0.1,
     minWidth: 110,
-    field: 'status',
-    headerName: 'Status',
+    field: 'diagnostico',
+    headerName: 'Diagnostico',
     renderCell: ({ row }) => {
       return (
         <CustomChip
           rounded
           skin='light'
           size='small'
-          label={row.status}
-          color={userStatusObj[row.status]}
+          label={row.diagnostico}
+          color='primary'
           sx={{ textTransform: 'capitalize' }}
         />
       )
@@ -255,6 +252,19 @@ const UserList = ({ apiData }) => {
   const [status, setStatus] = useState('')
   const [addUserOpen, setAddUserOpen] = useState(false)
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get('http://54.148.92.78:3000/pacientes')
+      const apiData = res.data
+      setData(res.data.data)
+      console.log(apiData)
+    }
+
+    getData()
+  }, [])
 
   // ** Hooks
   const dispatch = useDispatch()
@@ -290,22 +300,9 @@ const UserList = ({ apiData }) => {
   return (
     <Grid container spacing={6.5}>
       <Grid item xs={12}>
-        {apiData && (
-          <Grid container spacing={6}>
-            {apiData.statsHorizontalWithDetails.map((item, index) => {
-              return (
-                <Grid item xs={12} md={3} sm={6} key={index}>
-                  <CardStatsHorizontalWithDetails {...item} />
-                </Grid>
-              )
-            })}
-          </Grid>
-        )}
-      </Grid>
-      <Grid item xs={12}>
         <Card>
-          <CardHeader title='Search Filters' />
-          <CardContent>
+          {/* <CardHeader title='Search Filters' /> */}
+          {/* <CardContent>
             <Grid container spacing={6}>
               <Grid item sm={4} xs={12}>
                 <CustomTextField
@@ -362,13 +359,13 @@ const UserList = ({ apiData }) => {
                 </CustomTextField>
               </Grid>
             </Grid>
-          </CardContent>
+          </CardContent> */}
           <Divider sx={{ m: '0 !important' }} />
           <TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />
           <DataGrid
             autoHeight
             rowHeight={62}
-            rows={store.data}
+            rows={data}
             columns={columns}
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50]}
@@ -377,15 +374,17 @@ const UserList = ({ apiData }) => {
           />
         </Card>
       </Grid>
-
-      <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
+      <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />s
     </Grid>
   )
 }
 
 export const getStaticProps = async () => {
-  const res = await axios.get('/cards/statistics')
-  const apiData = res.data
+  // const res = await axios.get('/cards/statistics')
+
+  const res2 = await axios.get('http://54.148.92.78:3000/pacientes')
+
+  const apiData = res2.data
 
   return {
     props: {

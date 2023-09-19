@@ -65,6 +65,7 @@
     "react-draft-wysiwyg": "1.15.0",
     "react-dropzone": "14.2.3",
     "react-hook-form": "7.43.9",
+    "react-hot-loader": "^4.13.1",
     "react-hot-toast": "2.4.1",
     "react-i18next": "12.2.2",
     "react-perfect-scrollbar": "1.5.8",
@@ -87,7 +88,8 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-typescript": "3.5.3",
     "eslint-plugin-import": "2.27.5",
-    "prettier": "2.8.4"
+    "prettier": "2.8.4",
+    "react-refresh": "^0.14.0"
   },
   "resolutions": {
     "minipass": "5.0.0",
