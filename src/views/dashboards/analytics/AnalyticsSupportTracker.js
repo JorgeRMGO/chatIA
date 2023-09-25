@@ -19,18 +19,18 @@ import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 const data = [
   {
     subtitle: '142',
-    title: 'New Tickets',
+    title: 'Tikets de Nuevas Citas',
     avatarIcon: 'tabler:ticket'
   },
   {
     subtitle: '28',
     avatarColor: 'info',
-    title: 'Open Tickets',
+    title: 'Citas Atendidas',
     avatarIcon: 'tabler:circle-check'
   },
   {
-    subtitle: '1 Day',
-    title: 'Response Time',
+    subtitle: '1 Dia',
+    title: 'Citas Agendadas',
     avatarColor: 'warning',
     avatarIcon: 'tabler:clock'
   }
@@ -124,8 +124,8 @@ const AnalyticsSupportTracker = () => {
   return (
     <Card>
       <CardHeader
-        title='Support Tracker'
-        subheader='Last 7 Days'
+        title='Citas Registradas'
+        subheader='Ultimos 7 Dias'
         action={
           <OptionsMenu
             options={['Refresh', 'Edit', 'Share']}
@@ -137,7 +137,7 @@ const AnalyticsSupportTracker = () => {
         <Grid container spacing={6}>
           <Grid item xs={12} sm={5}>
             <Typography variant='h1'>164</Typography>
-            <Typography sx={{ mb: 6, color: 'text.secondary' }}>Total Tickets</Typography>
+            <Typography sx={{ mb: 6, color: 'text.secondary' }}>Total Citas</Typography>
             {data.map((item, index) => (
               <Box
                 key={index}

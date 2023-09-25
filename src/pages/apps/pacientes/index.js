@@ -19,6 +19,7 @@ import { DataGrid } from '@mui/x-data-grid'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
+import { Icono } from '@iconify/react'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,6 +60,7 @@ const userStatusObj = {
 
 // ** renders client column
 const renderClient = row => {
+  let fullName = row.nombre + '' + row.apellidos
   if (row.avatar?.length) {
     return <CustomAvatar src={row.avatar} sx={{ mr: 2.5, width: 38, height: 38 }} />
   } else {
@@ -68,7 +70,7 @@ const renderClient = row => {
         color={row.avatarColor}
         sx={{ mr: 2.5, width: 38, height: 38, fontWeight: 500, fontSize: theme => theme.typography.body1.fontSize }}
       >
-        {getInitials(row.nombre ? row.nombre : 'Generic')}
+        {getInitials(fullName ? fullName : 'Generic')}
       </CustomAvatar>
     )
   }
@@ -118,7 +120,8 @@ const RowOptions = ({ id }) => {
         <MenuItem
           component={Link}
           sx={{ '& svg': { mr: 2 } }}
-          href='/apps/user/view/account'
+          href='pacientes/show/'
+          id
           onClick={handleRowOptionsClose}
         >
           <Icon icon='tabler:eye' fontSize={20} />
@@ -161,7 +164,7 @@ const columns = [
                 '&:hover': { color: 'primary.main' }
               }}
             >
-              {nombre}
+              {nombre} {row.apellidos}
             </Typography>
             <Typography noWrap variant='body2' sx={{ color: 'text.disabled' }}>
               {edad}
@@ -189,51 +192,61 @@ const columns = [
       )
     }
   },
-
-  // {
-  //   flex: 0.15,
-  //   minWidth: 120,
-  //   headerName: 'Plan',
-  //   field: 'currentPlan',
-  //   renderCell: ({ row }) => {
-  //     return (
-  //       <Typography noWrap sx={{ fontWeight: 500, color: 'text.secondary', textTransform: 'capitalize' }}>
-  //         {row.diagnostico}
-  //       </Typography>
-  //     )
-  //   }
-  // },
-  // {
-  //   flex: 0.15,
-  //   minWidth: 190,
-  //   field: 'billing',
-  //   headerName: 'Billing',
-  //   renderCell: ({ row }) => {
-  //     return (
-  //       <Typography noWrap sx={{ color: 'text.secondary' }}>
-  //         {row.tratamiento}
-  //       </Typography>
-  //     )
-  //   }
-  // },
   {
-    flex: 0.1,
-    minWidth: 110,
-    field: 'diagnostico',
-    headerName: 'Diagnostico',
+    flex: 0.15,
+    minWidth: 190,
+    field: 'telefono',
+    headerName: 'Telefono',
     renderCell: ({ row }) => {
       return (
-        <CustomChip
-          rounded
-          skin='light'
-          size='small'
-          label={row.diagnostico}
-          color='primary'
-          sx={{ textTransform: 'capitalize' }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <CustomAvatar skin='light' sx={{ mr: 4, width: 30, height: 30 }} color={'primary'}>
+            <Icon icon={'tabler:phone'} />
+          </CustomAvatar>
+          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+            {row.telefono}
+          </Typography>
+        </Box>
       )
     }
   },
+  {
+    flex: 0.15,
+    minWidth: 190,
+    field: 'direccion',
+    headerName: 'Direccion',
+    renderCell: ({ row }) => {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <CustomAvatar skin='light' sx={{ mr: 4, width: 30, height: 30 }} color={'primary'}>
+            <Icon icon='mdi:address-marker' />
+          </CustomAvatar>
+          <Typography noWrap sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+            {row.direccion}
+          </Typography>
+        </Box>
+      )
+    }
+  },
+
+  // {
+  //   flex: 0.1,
+  //   minWidth: 110,
+  //   field: 'diagnostico',
+  //   headerName: 'Diagnostico',
+  //   renderCell: ({ row }) => {
+  //     return (
+  //       <CustomChip
+  //         rounded
+  //         skin='light'
+  //         size='small'
+  //         label={row.diagnostico}
+  //         color='primary'
+  //         sx={{ textTransform: 'capitalize' }}
+  //       />
+  //     )
+  //   }
+  // },
   {
     flex: 0.1,
     minWidth: 100,
@@ -371,6 +384,7 @@ const UserList = ({ apiData }) => {
             pageSizeOptions={[10, 25, 50]}
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
+            getRowId={row => row._id}
           />
         </Card>
       </Grid>

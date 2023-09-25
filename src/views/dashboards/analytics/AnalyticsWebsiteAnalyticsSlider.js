@@ -19,18 +19,18 @@ import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
 const data = [
   {
-    title: 'Traffic',
-    img: '/images/cards/graphic-illustration-1.png',
+    title: '',
+    img: '/images/logos_sanos/logo-sanos-blanco-letras.png',
     details: {
-      Sessions: '28%',
-      'Page Views': '3.1k',
-      Leads: '1.2k',
-      Conversions: '12%'
+      Sessions: '',
+      'Page Views': '',
+      Leads: '',
+      Conversions: ''
     }
   },
   {
-    title: 'Spending',
-    img: '/images/cards/graphic-illustration-2.png',
+    title: '',
+    img: '/images/logos_sanos/logo-sanos-blanco-letras.png',
     details: {
       Spend: '12h',
       Orders: '18',
@@ -39,8 +39,8 @@ const data = [
     }
   },
   {
-    title: 'Revenue Sources',
-    img: '/images/cards/graphic-illustration-3.png',
+    title: '',
+    img: '/images/logos_sanos/logo-sanos-blanco-letras.png',
     details: {
       Direct: '268',
       Organic: '890',
@@ -60,44 +60,18 @@ const Slides = ({ theme }) => {
             className='keen-slider__slide'
             sx={{ p: 6, '& .MuiTypography-root': { color: 'common.white' } }}
           >
-            <Typography variant='h5' sx={{ mb: 0.5 }}>
-              Website Analytics
-            </Typography>
-            <Typography variant='body2' sx={{ mb: 4.5 }}>
-              Total 28.5% Conversion Rate
-            </Typography>
+            <Typography variant='h5' sx={{ mb: 0.5 }}></Typography>
+            <Typography variant='body2' sx={{ mb: 4.5 }}></Typography>
             <Grid container>
               <Grid item xs={12} sm={8} sx={{ order: [2, 1] }}>
                 <Typography variant='h6' sx={{ mb: 4.5 }}>
                   {slide.title}
                 </Typography>
                 <Grid container spacing={4.5}>
-                  {Object.keys(slide.details).map((key, index) => {
-                    return (
-                      <Grid item key={index} xs={6}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <CustomAvatar
-                            color='primary'
-                            variant='rounded'
-                            sx={{
-                              mr: 2,
-                              width: 48,
-                              height: 30,
-                              fontWeight: 500,
-                              color: 'common.white',
-                              backgroundColor: 'primary.dark'
-                            }}
-                          >
-                            {slide.details[key]}
-                          </CustomAvatar>
-                          <Typography noWrap>{key}</Typography>
-                        </Box>
-                      </Grid>
-                    )
-                  })}
+                  <img src={slide.img} alt={slide.title} width={400} height={60} />
                 </Grid>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 sm={4}
@@ -111,13 +85,14 @@ const Slides = ({ theme }) => {
                       top: '50%',
                       position: 'absolute',
                       right: theme.spacing(6),
-                      transform: 'translateY(-50%)'
+                      transform: 'translateY(-50%)',
+                      marginBottom: 5
                     }
                   }
                 }}
               >
-                <img src={slide.img} alt={slide.title} />
-              </Grid>
+                
+              </Grid> */}
             </Grid>
           </Box>
         )

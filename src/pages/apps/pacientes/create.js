@@ -31,6 +31,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
+import InputAdornment from '@mui/material/InputAdornment'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -43,6 +44,8 @@ import axios from 'axios'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 // ** Custom Table Components Imports
 import TableHeader from 'src/views/apps/user/list/TableHeader'
@@ -69,33 +72,41 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  company: yup.string().required(),
-  billing: yup.string().required(),
-  country: yup.string().required(),
-  email: yup.string().email().required(),
-  contact: yup
+  nombre: yup
+    .string()
+    .typeError('El nombre es requerido')
+    .min(3, obj => showErrors('Nombre', obj.value.length, obj.min))
+    .required(),
+  apellidos: yup
+    .string()
+    .min(3, obj => showErrors('Apellidos', obj.value.length, obj.min))
+    .required(),
+  edad: yup
     .number()
-    .typeError('Contact Number field is required')
-    .min(10, obj => showErrors('Contact Number', obj.value.length, obj.min))
+    .typeError('La edad es requerida')
+    .min(10, obj => showErrors('Edad Numerica', obj.value.length, obj.min))
     .required(),
-  fullName: yup
-    .string()
-    .min(3, obj => showErrors('First Name', obj.value.length, obj.min))
+  telefono: yup
+    .number()
+    .typeError('Numero de telefono es requerido')
+    .min(10, obj => showErrors('Telefono Numerico', obj.value.length, obj.min))
     .required(),
-  username: yup
+  direccion: yup
     .string()
-    .min(3, obj => showErrors('Username', obj.value.length, obj.min))
+    .typeError('Dirección es requerido')
+    .min(3, obj => showErrors('Direccion', obj.value.length, obj.min))
     .required()
 })
 
 const defaultValues = {
+  nombre: '',
+  apellidos: '',
+  edad: '',
+  sexo: '',
+  telefono: '',
   email: '',
-  company: '',
-  country: '',
-  billing: '',
-  fullName: '',
-  username: '',
-  contact: Number('')
+  direccion: '',
+  contacto: ''
 }
 
 const UserList = props => {
@@ -121,12 +132,29 @@ const UserList = props => {
 
   const [data, setData] = useState([])
 
+  const ToastSuccess = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          textAlign: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          '& svg': { mb: 2 }
+        }}
+      >
+        <Icon icon='tabler:circle-check' fontSize='2rem' />
+        <Typography sx={{ mb: 4, fontWeight: 600 }}>Success</Typography>
+        <Typography sx={{ mb: 3 }}>Paciente Registrado</Typography>
+      </Box>
+    )
+  }
+
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get('http://54.148.92.78:3000/pacientes')
       const apiData = res.data
       setData(res.data.data)
-      console.log(apiData)
     }
 
     getData()
@@ -137,31 +165,15 @@ const UserList = props => {
   const store = useSelector(state => state.user)
 
   const onSubmit = data => {
-    console.log('enviando datos:')
-    console.log(data)
-
-    const res2 = axios.post('http://54.148.92.78:3000/pacientes')
-
-    /*
-    if (store.allData.some(u => u.email === data.email || u.username === data.username)) {
-      store.allData.forEach(u => {
-        if (u.email === data.email) {
-          setError('email', {
-            message: 'Email already exists!'
-          })
-        }
-        if (u.username === data.username) {
-          setError('username', {
-            message: 'Username already exists!'
-          })
-        }
+    axios
+      .post('http://54.148.92.78:3000/pacientes', data)
+      .then(function (response) {
+        reset()
+        toast.success('Paciente Registrado!')
       })
-    } else {
-      dispatch(addUser({ ...data, role, currentPlan: plan }))
-      toggle()
-      reset()
-    }
-    */
+      .catch(function (error) {
+        toast.error('Error al registrar paciente')
+      })
   }
 
   const handleClose = () => {
@@ -176,176 +188,239 @@ const UserList = props => {
     <Grid container spacing={6.5}>
       <Grid item xs={12}>
         <Card>
-          <Divider sx={{ m: '0 !important' }} />
+          <CardHeader title='Registro de paciente' />
+          {/* <Divider sx={{ m: '0 !important' }} /> */}
 
           {/*<TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />*/}
 
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name='fullName'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Full Name'
-                    onChange={onChange}
-                    placeholder='John Doe'
-                    error={Boolean(errors.fullName)}
-                    {...(errors.fullName && { helperText: errors.fullName.message })}
+              <Grid container spacing={6.5}>
+                <Grid item xs={4}>
+                  <Controller
+                    name='nombre'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label='Nombre'
+                        onChange={onChange}
+                        placeholder='Ingresar'
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:user' />
+                            </InputAdornment>
+                          )
+                        }}
+                        error={Boolean(errors.nombre)}
+                        {...(errors.nombre && { helperText: errors.nombre.message })}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='username'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Username'
-                    onChange={onChange}
-                    placeholder='johndoe'
-                    error={Boolean(errors.username)}
-                    {...(errors.username && { helperText: errors.username.message })}
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    name='apellidos'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label='Apellidos'
+                        onChange={onChange}
+                        placeholder='Ingresar'
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:user' />
+                            </InputAdornment>
+                          )
+                        }}
+                        error={Boolean(errors.apellidos)}
+                        {...(errors.apellidos && { helperText: errors.apellidos.message })}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='email'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    type='email'
-                    label='Email'
-                    value={value}
-                    sx={{ mb: 4 }}
-                    onChange={onChange}
-                    error={Boolean(errors.email)}
-                    placeholder='johndoe@email.com'
-                    {...(errors.email && { helperText: errors.email.message })}
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    name='edad'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label='Edad'
+                        type='number'
+                        onChange={onChange}
+                        placeholder='Ingresar'
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:user' />
+                            </InputAdornment>
+                          )
+                        }}
+                        error={Boolean(errors.edad)}
+                        {...(errors.edad && { helperText: errors.edad.message })}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='company'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Company'
-                    onChange={onChange}
-                    placeholder='Company PVT LTD'
-                    error={Boolean(errors.company)}
-                    {...(errors.company && { helperText: errors.company.message })}
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    name='sexo'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        select
+                        fullWidth
+                        sx={{ mb: 4 }}
+                        label='Sexo'
+                        id='validation-billing-select'
+                        error={Boolean(errors.sexo)}
+                        aria-describedby='validation-billing-select'
+                        {...(errors.sexo && { helperText: errors.sexo.message })}
+                        SelectProps={{ value: value, onChange: e => onChange(e) }}
+                      >
+                        <MenuItem value=''>Seleccione...</MenuItem>
+                        <MenuItem value='Femenino'>Femenino</MenuItem>
+                        <MenuItem value='Masculino'>Masculino</MenuItem>
+                      </CustomTextField>
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='country'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Country'
-                    onChange={onChange}
-                    placeholder='Australia'
-                    error={Boolean(errors.country)}
-                    {...(errors.country && { helperText: errors.country.message })}
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    name='telefono'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label='Telefono'
+                        onChange={onChange}
+                        placeholder='Ingresar'
+                        type='number'
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:phone' />
+                            </InputAdornment>
+                          )
+                        }}
+                        error={Boolean(errors.telefono)}
+                        {...(errors.telefono && { helperText: errors.telefono.message })}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='contact'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    type='number'
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Contact'
-                    onChange={onChange}
-                    placeholder='(397) 294-5153'
-                    error={Boolean(errors.contact)}
-                    {...(errors.contact && { helperText: errors.contact.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='billing'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    select
-                    fullWidth
-                    sx={{ mb: 4 }}
-                    label='Billing'
-                    id='validation-billing-select'
-                    error={Boolean(errors.billing)}
-                    aria-describedby='validation-billing-select'
-                    {...(errors.billing && { helperText: errors.billing.message })}
-                    SelectProps={{ value: value, onChange: e => onChange(e) }}
-                  >
-                    <MenuItem value=''>Billing</MenuItem>
-                    <MenuItem value='Auto Debit'>Auto Debit</MenuItem>
-                    <MenuItem value='Manual - Cash'>Manual - Cash</MenuItem>
-                    <MenuItem value='Manual - Paypal'>Manual - Paypal</MenuItem>
-                    <MenuItem value='Manual - Credit Card'>Manual - Credit Card</MenuItem>
-                  </CustomTextField>
-                )}
-              />
-              <CustomTextField
-                select
-                fullWidth
-                value={role}
-                sx={{ mb: 4 }}
-                label='Select Role'
-                onChange={e => setRole(e.target.value)}
-                SelectProps={{ value: role, onChange: e => setRole(e.target.value) }}
-              >
-                <MenuItem value='admin'>Admin</MenuItem>
-                <MenuItem value='author'>Author</MenuItem>
-                <MenuItem value='editor'>Editor</MenuItem>
-                <MenuItem value='maintainer'>Maintainer</MenuItem>
-                <MenuItem value='subscriber'>Subscriber</MenuItem>
-              </CustomTextField>
+                </Grid>
 
-              <CustomTextField
-                select
-                fullWidth
-                sx={{ mb: 6 }}
-                label='Select Plan'
-                SelectProps={{ value: plan, onChange: e => setPlan(e.target.value) }}
-              >
-                <MenuItem value='basic'>Basic</MenuItem>
-                <MenuItem value='company'>Company</MenuItem>
-                <MenuItem value='enterprise'>Enterprise</MenuItem>
-                <MenuItem value='team'>Team</MenuItem>
-              </CustomTextField>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 3 }}>
-                  Submit
-                </Button>
-                <Button variant='tonal' color='secondary' onClick={handleClose}>
-                  Cancel
-                </Button>
-              </Box>
+                <Grid item xs={4}>
+                  <Controller
+                    name='email'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='email'
+                        label='Email'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={onChange}
+                        error={Boolean(errors.email)}
+                        placeholder='Opcional'
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:mail' />
+                            </InputAdornment>
+                          )
+                        }}
+                        {...(errors.email && { helperText: errors.email.message })}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name='direccion'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        multiline
+                        minRows={3}
+                        value={value}
+                        onChange={onChange}
+                        label='Dirección'
+                        placeholder='Ingresa...'
+                        error={Boolean(errors.direccion)}
+                        sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:message' />
+                            </InputAdornment>
+                          )
+                        }}
+                        {...(errors.direccion && { helperText: errors.direccion.message })}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name='contacto'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        multiline
+                        minRows={3}
+                        value={value}
+                        onChange={onChange}
+                        label='Contacto'
+                        placeholder='Ingresa...'
+                        error={Boolean(errors.contacto)}
+                        sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <Icon fontSize='1.25rem' icon='tabler:message' />
+                            </InputAdornment>
+                          )
+                        }}
+                        {...(errors.contacto && { helperText: errors.contacto.message })}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Button type='submit' variant='contained' sx={{ mr: 3 }}>
+                    Guardar
+                  </Button>
+                  <a href='../'>
+                    <Button variant='tonal' color='secondary'>
+                      Cancelar
+                    </Button>
+                  </a>
+                </Grid>
+              </Grid>
             </form>
           </Box>
         </Card>

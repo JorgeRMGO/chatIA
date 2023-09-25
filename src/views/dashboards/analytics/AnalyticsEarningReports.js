@@ -23,22 +23,22 @@ const series = [{ data: [37, 76, 65, 41, 99, 53, 70] }]
 const data = [
   {
     progress: 64,
-    stats: '$545.69',
-    title: 'Earnings',
+    stats: '545',
+    title: 'Pacientes',
     avatarIcon: 'tabler:currency-dollar'
   },
   {
     progress: 59,
-    title: 'Profit',
-    stats: '$256.34',
+    title: 'Nuevos',
+    stats: '68',
     avatarColor: 'info',
     progressColor: 'info',
     avatarIcon: 'tabler:chart-pie-2'
   },
   {
     progress: 22,
-    stats: '$74.19',
-    title: 'Expense',
+    stats: '60',
+    title: 'Eliminados',
     avatarColor: 'error',
     progressColor: 'error',
     avatarIcon: 'tabler:brand-paypal'
@@ -117,7 +117,7 @@ const AnalyticsEarningReports = () => {
     <Card>
       <CardHeader
         sx={{ pb: 0 }}
-        title='Earning Reports'
+        title='Reporte de Pacientes'
         subheader='Weekly Earnings Overview'
         action={
           <OptionsMenu
@@ -135,10 +135,10 @@ const AnalyticsEarningReports = () => {
             sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}
           >
             <Box sx={{ mb: 3, rowGap: 1, columnGap: 2.5, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-              <Typography variant='h1'>$468</Typography>
+              <Typography variant='h1'>68</Typography>
               <CustomChip rounded size='small' skin='light' color='success' label='+4.2%' />
             </Box>
-            <Typography variant='body2'>You informed of this week compared to last week</Typography>
+            <Typography variant='body2'>Informacion comparada con la semana pasada</Typography>
           </StyledGrid>
           <StyledGrid item xs={12} sm={7}>
             <ReactApexcharts type='bar' height={163} series={series} options={options} />

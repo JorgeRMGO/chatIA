@@ -29,7 +29,6 @@
     "@fullcalendar/react": "6.1.6",
     "@fullcalendar/timegrid": "6.1.6",
     "@hookform/resolvers": "3.1.0",
-    "@iconify/react": "4.1.0",
     "@mui/lab": "5.0.0-alpha.128",
     "@mui/material": "5.12.2",
     "@mui/system": "5.12.1",
@@ -71,6 +70,7 @@
     "react-perfect-scrollbar": "1.5.8",
     "react-popper": "2.3.0",
     "react-redux": "8.0.5",
+    "react-router-dom": "^6.16.0",
     "recharts": "2.5.0",
     "stylis": "4.1.4",
     "stylis-plugin-rtl": "2.1.1",
@@ -79,6 +79,7 @@
   "devDependencies": {
     "@iconify/iconify": "3.1.0",
     "@iconify/json": "2.2.58",
+    "@iconify/react": "^4.1.1",
     "@iconify/tools": "2.2.6",
     "@iconify/types": "2.0.0",
     "@iconify/utils": "2.1.5",
