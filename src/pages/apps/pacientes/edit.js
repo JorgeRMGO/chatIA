@@ -123,6 +123,8 @@ const UserList = props => {
     contacto: ''
   })
 
+  const [id, setId] = useState(null)
+
   const {
     reset,
     control,
@@ -157,11 +159,18 @@ const UserList = props => {
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get('http://54.148.92.78:3000/api/pacientes/6511fe8fd39738c31123ddd3')
-      const apiData = res.data
-      console.log(res.data.data)
-      setData(res.data.data)
-      setValues(res.data.data)
+      const apiData = res.data.data
+
       setIsLoading(false)
+      setValue('nombre', apiData.nombre)
+      setValue('apellidos', apiData.apellidos)
+      setValue('edad', apiData.edad)
+      setValue('sexo', apiData.sexo)
+      setValue('telefono', apiData.telefono)
+      setValue('email', apiData.email)
+      setValue('direccion', apiData.direccion)
+      setValue('contacto', apiData.contacto)
+      setId(apiData._id)
     }
 
     getData()
@@ -172,11 +181,9 @@ const UserList = props => {
   const store = useSelector(state => state.user)
 
   const onSubmit = data => {
-    console.log(data)
     axios
-      .post('http://54.148.92.78:3000/api/pacientes/' + id, data)
+      .put('http://54.148.92.78:3000/api/pacientes/' + id, data)
       .then(function (response) {
-        reset()
         toast.success('Paciente Actualizado!')
       })
       .catch(function (error) {
@@ -208,7 +215,7 @@ const UserList = props => {
         <Card>
           <CardHeader title='Registro de paciente' />
 
-          {JSON.stringify(defaultValues)}
+          {/* {JSON.stringify(defaultValues)} */}
           {/* <Divider sx={{ m: '0 !important' }} /> */}
 
           {/*<TableHeader value={value} handleFilter={handleFilter} toggle={toggleAddUserDrawer} />*/}
