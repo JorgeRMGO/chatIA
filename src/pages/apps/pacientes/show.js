@@ -36,6 +36,7 @@ import UserSubscriptionDialog from 'src/views/apps/user/view/UserSubscriptionDia
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
+import { useParams } from 'react-router-dom'
 
 const roleColors = {
   admin: 'error',
@@ -49,21 +50,6 @@ const statusColors = {
   active: 'success',
   pending: 'warning',
   inactive: 'secondary'
-}
-
-const data = {
-  data: {
-    _id: '650c7dd0d39738c31123ddd0',
-    id: null,
-    nombre: 'JORGE',
-    apellidos: 'MURILLO',
-    edad: 24,
-    sexo: 'Masculino',
-    telefono: 4434797316,
-    email: 'jorge@gmail.com',
-    direccion: 'ANGAMACUTIRO',
-    contacto: '6656200'
-  }
 }
 
 // ** Styled <sup> component
@@ -88,8 +74,13 @@ const UserViewLeft = () => {
   const [suspendDialogOpen, setSuspendDialogOpen] = useState(false)
   const [subscriptionDialogOpen, setSubscriptionDialogOpen] = useState(false)
 
-  // const [data, setData] = useState(null)
-  // const id = '650c7dd0d39738c31123ddd0'
+  const [data, setData] = useState(null)
+
+  // const { parametro } = useParams()
+  // const id = parametro
+  // console.log('este es el id ' + id)
+
+  const id = '6511fe8fd39738c31123ddd3'
 
   // Handle Edit dialog
   const handleEditClickOpen = () => setOpenEdit(true)
@@ -99,20 +90,20 @@ const UserViewLeft = () => {
   const handlePlansClickOpen = () => setOpenPlans(true)
   const handlePlansClose = () => setOpenPlans(false)
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://54.148.92.78:3000/pacientes/id=${id}`) // Reemplaza con tu URL de API
-  //     .then(response => {
-  //       // Procesa la respuesta de la petición Axios aquí
-  //       console.log('Datos recibidos:', response.data.data)
-  //       setData(response.data.data)
-  //     })
-  //     .catch(error => {
-  //       // Maneja errores de la petición Axios aquí
-  //       console.error('Error al cargar datos:', error)
-  //     })
-  // }, [])
-  console.log(data.data)
+  useEffect(() => {
+    axios
+      .get(`http://54.148.92.78:3000/api/pacientes/${id}`) // Reemplaza con tu URL de API
+      .then(response => {
+        // Procesa la respuesta de la petición Axios aquí
+        console.log('Datos recibidos:', response.data.data)
+        setData(response.data.data)
+      })
+      .catch(error => {
+        // Maneja errores de la petición Axios aquí
+        console.error('Error al cargar datos:', error)
+      })
+  }, [])
+  console.log(data)
   if (data) {
     return (
       <Grid container spacing={6}>
@@ -123,7 +114,7 @@ const UserViewLeft = () => {
                 <CustomAvatar
                   src={data.avatar}
                   variant='rounded'
-                  alt={data.data.nombre}
+                  alt={data.nombre}
                   sx={{ width: 100, height: 100, mb: 4 }}
                 />
               ) : (
@@ -133,17 +124,17 @@ const UserViewLeft = () => {
                   color={data.avatarColor}
                   sx={{ width: 100, height: 100, mb: 4, fontSize: '3rem' }}
                 >
-                  {getInitials(data.data.nombre + ' ' + data.data.apellidos)}
+                  {getInitials(data.nombre + ' ' + data.apellidos)}
                 </CustomAvatar>
               )}
               <Typography variant='h4' sx={{ mb: 3 }}>
-                {data.data.nombre + ' ' + data.data.apellidos}
+                {data.nombre + ' ' + data.apellidos}
               </Typography>
               <CustomChip
                 rounded
                 skin='light'
                 size='small'
-                label={data.data.edad}
+                label={data.edad}
                 color={roleColors[data.role]}
                 sx={{ textTransform: 'capitalize' }}
               />
@@ -158,7 +149,7 @@ const UserViewLeft = () => {
               <Box sx={{ pt: 4 }}>
                 <Box sx={{ display: 'flex', mb: 3 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, color: 'text.secondary' }}>Email:</Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>{data.data.email}</Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>{data.email}</Typography>
                 </Box>
                 {/* <Box sx={{ display: 'flex', mb: 3, alignItems: 'center' }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, color: 'text.secondary' }}>Status:</Typography>
@@ -175,22 +166,20 @@ const UserViewLeft = () => {
                 </Box> */}
                 <Box sx={{ display: 'flex', mb: 3 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, color: 'text.secondary' }}>Sexo:</Typography>
-                  <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-                    {data.data.sexo}
-                  </Typography>
+                  <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>{data.sexo}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 3 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, color: 'text.secondary' }}>Telefono:</Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>+52 {data.data.telefono}</Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>+52 {data.telefono}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 3 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, color: 'text.secondary' }}>Direccion:</Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>{data.data.direccion}</Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>{data.direccion}</Typography>
                 </Box>
               </Box>
             </CardContent>
 
-            <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            {/* <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button variant='contained' sx={{ mr: 2 }} onClick={handleEditClickOpen}>
                 Editar
               </Button>
@@ -199,7 +188,7 @@ const UserViewLeft = () => {
                   Cancelar
                 </Button>
               </a>
-            </CardActions>
+            </CardActions> */}
 
             <Dialog
               open={openEdit}

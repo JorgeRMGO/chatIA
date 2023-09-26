@@ -124,20 +124,15 @@ const RowOptions = ({ id }) => {
           onClick={handleRowOptionsClose}
         >
           <Icon icon='tabler:eye' fontSize={20} />
-          Ver
+          View
         </MenuItem>
-        <MenuItem
-          component={Link}
-          sx={{ '& svg': { mr: 2 } }}
-          href={'pacientes/edit?id=' + id}
-          onClick={handleRowOptionsClose}
-        >
+        <MenuItem onClick={handleRowOptionsClose} sx={{ '& svg': { mr: 2 } }}>
           <Icon icon='tabler:edit' fontSize={20} />
-          Editar
+          Edit
         </MenuItem>
         <MenuItem onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
           <Icon icon='tabler:trash' fontSize={20} />
-          Eliminar
+          Delete
         </MenuItem>
       </Menu>
     </>
