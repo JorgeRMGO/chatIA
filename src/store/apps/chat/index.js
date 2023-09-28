@@ -33,32 +33,11 @@ export const selectChat = createAsyncThunk('appChat/selectChat', async (id, { di
 
 // ** Send Msg
 export const sendMsg = createAsyncThunk('appChat/sendMsg', async (obj, { dispatch }) => {
-  console.log(obj.message)
-  const apiUrl = 'https://api.openai.com/v1/chat/completions' // URL de la API de ChatGPT
-  const apiKey = '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' // Tu clave de API de OpenAI
-  let chats = [{ role: 'user', content: obj.message }]
-
-  const response = await axios.post(
-    apiUrl,
-    {
-      messages: chats,
-      model: 'gpt-3.5-turbo'
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`
-      }
+  const response = await axios.post('/apps/chat/send-msg', {
+    data: {
+      obj
     }
-  )
-  console.log(response.data.choices[0].message)
-  response.data.choices[0].message
-
-  // const response = await axios.post('/apps/chat/send-msg', {
-  //   data: {
-  //     obj
-  //   }
-  // })
+  })
   if (obj.contact) {
     await dispatch(selectChat(obj.contact.id))
   }

@@ -443,9 +443,9 @@ const SidebarLeft = props => {
                 Chats
               </Typography>
               <List sx={{ mb: 5, p: 0 }}>{renderChats()}</List>
-              <Typography variant='h5' sx={{ ml: 3, mb: 3.5, color: 'primary.main' }}>
+              {/* <Typography variant='h5' sx={{ ml: 3, mb: 3.5, color: 'primary.main' }}>
                 Contacts
-              </Typography>
+              </Typography> */}
               <List sx={{ p: 0 }}>{renderContacts()}</List>
             </Box>
           </ScrollWrapper>

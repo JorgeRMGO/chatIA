@@ -64,8 +64,9 @@ const AppChat = () => {
         borderRadius: 1,
         overflow: 'hidden',
         position: 'relative',
-        maxHeight: '500px',
-        overflowY: 'auto',
+        maxHeight: '400px',
+        overflowY: 'scroll',
+        scrollBehavior: 'smooth',
         backgroundColor: 'background.paper',
         boxShadow: skin === 'bordered' ? 0 : 6,
         ...(skin === 'bordered' && { border: `1px solid ${theme.palette.divider}` })
