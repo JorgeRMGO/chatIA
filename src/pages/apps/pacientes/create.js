@@ -56,7 +56,7 @@ import { addUser } from 'src/store/apps/user'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
-    return `${field} field is required`
+    return `Campo requerido`
   } else if (valueLen > 0 && valueLen < min) {
     return `${field} must be at least ${min} characters`
   } else {
@@ -74,28 +74,29 @@ const Header = styled(Box)(({ theme }) => ({
 const schema = yup.object().shape({
   nombre: yup
     .string()
-    .typeError('El nombre es requerido')
-    .min(3, obj => showErrors('Nombre', obj.value.length, obj.min))
+    .typeError('')
+    .min(3, obj => showErrors('', obj.value.length, obj.min))
     .required(),
   apellidos: yup
     .string()
-    .min(3, obj => showErrors('Apellidos', obj.value.length, obj.min))
+    .min(3, obj => showErrors('', obj.value.length, obj.min))
     .required(),
   edad: yup
     .number()
-    .typeError('La edad es requerida')
-    .min(10, obj => showErrors('Edad Numerica', obj.value.length, obj.min))
+    .typeError('Campo requerido')
+    .min(10, obj => showErrors('Campo requerido', obj.value.length, obj.min))
     .required(),
   telefono: yup
     .number()
-    .typeError('Numero de telefono es requerido')
-    .min(10, obj => showErrors('Telefono Numerico', obj.value.length, obj.min))
+    .typeError('Campo requerido')
+    .min(10, obj => showErrors('Campo requerido', obj.value.length, obj.min))
     .required(),
   direccion: yup
     .string()
-    .typeError('Dirección es requerido')
-    .min(3, obj => showErrors('Direccion', obj.value.length, obj.min))
-    .required()
+    .typeError('')
+    .min(3, obj => showErrors('', obj.value.length, obj.min))
+    .required(),
+  sexo: yup.string().required()
 })
 
 const defaultValues = {
@@ -152,7 +153,7 @@ const UserList = props => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get('http://54.148.92.78:3000/pacientes')
+      const res = await axios.get('http://54.148.92.78:3000/api/pacientes')
       const apiData = res.data
       setData(res.data.data)
     }
@@ -166,7 +167,7 @@ const UserList = props => {
 
   const onSubmit = data => {
     axios
-      .post('http://54.148.92.78:3000/pacientes', data)
+      .post('http://54.148.92.78:3000/api/pacientes', data)
       .then(function (response) {
         reset()
         toast.success('Paciente Registrado!')
@@ -432,7 +433,7 @@ const UserList = props => {
 export const getStaticProps = async () => {
   // const res = await axios.get('/cards/statistics')
 
-  const res2 = await axios.get('http://54.148.92.78:3000/pacientes')
+  const res2 = await axios.get('http://54.148.92.78:3000/api/pacientes')
   const apiData = res2.data
 
   return {

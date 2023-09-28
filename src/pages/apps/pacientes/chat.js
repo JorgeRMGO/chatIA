@@ -31,6 +31,7 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { sendMsg, selectChat, fetchUserProfile, fetchChatsContacts, removeSelectedChat } from 'src/store/apps/chat'
 import SidebarLeft from 'src/views/apps/chat/SidebarLeft'
+import AppChat from './chatt'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -207,7 +208,7 @@ const UserViewLeft = () => {
   if (data) {
     return (
       <Grid container spacing={3}>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Card>
             <form onSubmit={handleSubmit(onSubmit)}>
               <CardContent sx={{ pt: 13.5, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
@@ -285,48 +286,17 @@ const UserViewLeft = () => {
             </form>
           </Card>
         </Grid>
-        <Grid item xs={8}>
-          <Card>
-            <CardContent sx={{ pb: 1, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-              <CustomChip rounded skin='light' size='small' color='primary' label='Chat' />
-              <Box sx={{ display: 'flex', position: 'relative' }}></Box>
-            </CardContent>
-            <CardContent>
-              <Box sx={{ mt: 2.5, mb: 4 }}>
-                <SidebarLeft
-                  store={store}
-                  hidden={hidden}
-                  mdAbove={mdAbove}
-                  dispatch={dispatch}
-                  statusObj={statusObj}
-                  userStatus={userStatus}
-                  selectChat={selectChat}
-                  getInitials={getInitials}
-                  sidebarWidth={sidebarWidth}
-                  setUserStatus={setUserStatus}
-                  leftSidebarOpen={leftSidebarOpen}
-                  removeSelectedChat={removeSelectedChat}
-                  userProfileLeftOpen={userProfileLeftOpen}
-                  formatDateToMonthShort={formatDateToMonthShort}
-                  handleLeftSidebarToggle={handleLeftSidebarToggle}
-                  handleUserProfileLeftSidebarToggle={handleUserProfileLeftSidebarToggle}
-                />
-                <ChatContent
-                  store={store}
-                  hidden={hidden}
-                  sendMsg={sendMsg}
-                  mdAbove={mdAbove}
-                  dispatch={dispatch}
-                  statusObj={statusObj}
-                  getInitials={getInitials}
-                  sidebarWidth={sidebarWidth}
-                  userProfileRightOpen={userProfileRightOpen}
-                  handleLeftSidebarToggle={handleLeftSidebarToggle}
-                  handleUserProfileRightSidebarToggle={handleUserProfileRightSidebarToggle}
-                />
-              </Box>
-            </CardContent>
-          </Card>
+        <Grid
+          item
+          xs={9}
+          style={{
+            maxHight: '300px',
+            overflowY: 'auto',
+            border: '1px solid #ccc',
+            padding: '10px'
+          }}
+        >
+          <AppChat />
         </Grid>
       </Grid>
     )
@@ -334,6 +304,7 @@ const UserViewLeft = () => {
     return null
   }
 }
+AppChat.contentHeightFixed = true
 UserViewLeft.contentHeightFixed = true
 
 export default UserViewLeft
