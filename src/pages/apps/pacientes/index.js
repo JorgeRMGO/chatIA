@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { DataGrid } from '@mui/x-data-grid'
+import { Show } from './show'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -117,21 +118,17 @@ const RowOptions = ({ id }) => {
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
-        <MenuItem
-          component={Link}
-          sx={{ '& svg': { mr: 2 } }}
-          href={'pacientes/show?id=' + id}
-          onClick={handleRowOptionsClose}
-        >
+        <MenuItem component={Link} sx={{ '& svg': { mr: 2 } }} href={`pacientes/show/`} onClick={handleRowOptionsClose}>
           <Icon icon='tabler:eye' fontSize={20} />
           Ver
         </MenuItem>
         <MenuItem
           component={Link}
           sx={{ '& svg': { mr: 2 } }}
-          href={'pacientes/edit?id=' + id}
+          href={`pacientes/edit?id=${id}`}
           onClick={handleRowOptionsClose}
         >
+          {/* <Edit id={id} /> */}
           <Icon icon='tabler:edit' fontSize={20} />
           Editar
         </MenuItem>
@@ -271,7 +268,7 @@ const UserList = ({ apiData }) => {
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
 
   const [data, setData] = useState([])
-
+  const [id, setId] = useState([])
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get('http://54.148.92.78:3000/api/pacientes')
@@ -292,7 +289,8 @@ const UserList = ({ apiData }) => {
         role,
         status,
         q: value,
-        currentPlan: plan
+        currentPlan: plan,
+        paciente: { id: null }
       })
     )
   }, [dispatch, plan, role, status, value])

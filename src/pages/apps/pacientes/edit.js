@@ -123,7 +123,7 @@ const UserList = props => {
     contacto: ''
   })
 
-  const [id, setId] = useState(null)
+  // const [id, setId] = useState(null)
 
   const {
     reset,
@@ -170,7 +170,8 @@ const UserList = props => {
       setValue('email', apiData.email)
       setValue('direccion', apiData.direccion)
       setValue('contacto', apiData.contacto)
-      setId(apiData._id)
+
+      // setId(apiData._id)
     }
 
     getData()

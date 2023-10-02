@@ -60,7 +60,10 @@ const ChatContent = props => {
         return (
           <ChatWrapperStartChat
             sx={{
-              ...(mdAbove ? { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 } : {})
+              ...(mdAbove ? { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 } : {}),
+              maxHeight: '400px',
+              overflowY: 'scroll',
+              scrollBehavior: 'smooth'
             }}
           >
             <MuiAvatar
@@ -101,7 +104,10 @@ const ChatContent = props => {
               width: 0,
               flexGrow: 1,
               height: '100%',
-              backgroundColor: 'action.hover'
+              backgroundColor: 'action.hover',
+              maxHeight: '466px',
+              overflowY: 'scroll',
+              scrollBehavior: 'smooth'
             }}
           >
             <Box

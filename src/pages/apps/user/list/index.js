@@ -257,7 +257,7 @@ const UserList = ({ apiData }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get('http://54.148.92.78:3000/pacientes')
+      const res = await axios.get('http://54.148.92.78:3000/api/pacientes')
       const apiData = res.data
       setData(res.data.data)
       console.log(apiData)
@@ -382,7 +382,7 @@ const UserList = ({ apiData }) => {
 export const getStaticProps = async () => {
   // const res = await axios.get('/cards/statistics')
 
-  const res2 = await axios.get('http://54.148.92.78:3000/pacientes')
+  const res2 = await axios.get('http://54.148.92.78:3000/api/pacientes')
 
   const apiData = res2.data
 

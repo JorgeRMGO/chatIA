@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -36,7 +37,6 @@ import UserSubscriptionDialog from 'src/views/apps/user/view/UserSubscriptionDia
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
-import { useParams } from 'react-router-dom'
 
 const roleColors = {
   admin: 'error',
@@ -76,12 +76,6 @@ const UserViewLeft = () => {
 
   const [data, setData] = useState(null)
 
-  // const { parametro } = useParams()
-  // const id = parametro
-  // console.log('este es el id ' + id)
-
-  const id = '6511fe8fd39738c31123ddd3'
-
   // Handle Edit dialog
   const handleEditClickOpen = () => setOpenEdit(true)
   const handleEditClose = () => setOpenEdit(false)
@@ -108,6 +102,7 @@ const UserViewLeft = () => {
     return (
       <Grid container spacing={6}>
         <Grid item xs={6}>
+          <p>ID recibido: {id}</p>
           <Card>
             <CardContent sx={{ pt: 13.5, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {data.avatar ? (

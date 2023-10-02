@@ -114,7 +114,7 @@ const SendMsgToChatGPT = async obj => {
   let activeChat = data.chats.find(chat => chat.id === obj.contact.id)
 
   const apiUrl = 'https://api.openai.com/v1/chat/completions' // URL de la API de ChatGPT
-  const apiKey = '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' // Tu clave de API de OpenAI
+  const apiKey = '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' // Tu clave de API de OpenAI
 
   let chats = []
   console.log('activeChat')
