@@ -101,26 +101,13 @@ const ApexBarChart = () => {
   return (
     <Card>
       <CardHeader
-        title='Data Science'
-        subheader='$74,382.72'
+        title='Grafica de informe de posibles enfermedades'
         sx={{
           flexDirection: ['column', 'row'],
           alignItems: ['flex-start', 'center'],
           '& .MuiCardHeader-action': { mb: 0 },
           '& .MuiCardHeader-content': { mb: [2, 0] }
         }}
-        action={
-          <DatePicker
-            selectsRange
-            endDate={endDate}
-            id='apexchart-bar'
-            selected={startDate}
-            startDate={startDate}
-            onChange={handleOnChange}
-            placeholderText='Click to select a date'
-            customInput={<CustomInput start={startDate} end={endDate} />}
-          />
-        }
       />
       <CardContent>
         <ReactApexcharts

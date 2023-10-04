@@ -66,7 +66,7 @@ const navigation = () => {
           path: '/apps/pacientes/create'
         }
       ]
-    }
+    },
 
     // {
     //   title: 'Dashboards',
@@ -573,24 +573,25 @@ const navigation = () => {
     // {
     //   sectionTitle: 'Charts & Misc'
     // },
-    // {
-    //   title: 'Charts',
-    //   icon: 'tabler:chart-pie',
-    //   children: [
-    //     {
-    //       title: 'Apex',
-    //       path: '/charts/apex-charts'
-    //     },
-    //     {
-    //       title: 'Recharts',
-    //       path: '/charts/recharts'
-    //     },
-    //     {
-    //       title: 'ChartJS',
-    //       path: '/charts/chartjs'
-    //     }
-    //   ]
-    // },
+    {
+      title: 'Charts',
+      icon: 'tabler:chart-pie',
+      children: [
+        {
+          title: 'Apex',
+          path: '/charts/apex-charts'
+        },
+        {
+          title: 'Recharts',
+          path: '/charts/recharts'
+        },
+        {
+          title: 'ChartJS',
+          path: '/charts/chartjs'
+        }
+      ]
+    }
+
     // {
     //   path: '/acl',
     //   action: 'read',

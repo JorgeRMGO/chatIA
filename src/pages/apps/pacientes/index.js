@@ -118,7 +118,12 @@ const RowOptions = ({ id }) => {
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
-        <MenuItem component={Link} sx={{ '& svg': { mr: 2 } }} href={`pacientes/show/`} onClick={handleRowOptionsClose}>
+        <MenuItem
+          component={Link}
+          sx={{ '& svg': { mr: 2 } }}
+          href={`pacientes/show/?id=${id}`}
+          onClick={handleRowOptionsClose}
+        >
           <Icon icon='tabler:eye' fontSize={20} />
           Ver
         </MenuItem>
